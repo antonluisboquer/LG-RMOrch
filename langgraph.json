@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "LG-RMOrch": "./output/rmorch_agent.py:graph"
+  },
+  "env": ".env"
+}

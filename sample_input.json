@@ -1,0 +1,13 @@
+{
+  "loan_number": "2601956490",
+  "env": "Prod",
+  "options": {
+    "allow_dft": false,
+    "dft_reason": "",
+    "target_ecd": "",
+    "allow_resubmit": false,
+    "mark_not_ready": false,
+    "condition_updates": []
+  },
+  "messages": []
+}

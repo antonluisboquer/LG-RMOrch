@@ -1,0 +1,54 @@
+"""Step Loader — Dynamic plan loading per step.
+
+Adapted from DocsOrch Agent Factory pattern.
+"""
+
+import logging
+import os
+
+from registry import get_step_config, is_step_skipped
+
+logger = logging.getLogger(__name__)
+
+PLANS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "plans")
+
+_plan_cache: dict[str, str] = {}
+
+
+def load_plan_content(step_id: str) -> str:
+    """Load and return the plan content for a step (cached)."""
+    if step_id in _plan_cache:
+        return _plan_cache[step_id]
+
+    if is_step_skipped(step_id):
+        result = f"Step {step_id} is SKIPPED in dev mode. Call write_todo to mark complete and move on."
+        _plan_cache[step_id] = result
+        return result
+
+    cfg = get_step_config(step_id)
+    if not cfg:
+        logger.warning(f"[STEP_LOADER] No config for {step_id}")
+        result = f"No plan available for {step_id}."
+        _plan_cache[step_id] = result
+        return result
+
+    plan_file = cfg.plan_file
+    if not plan_file:
+        logger.warning(f"[STEP_LOADER] No plan file for {step_id}")
+        result = f"No plan file defined for {step_id}."
+        _plan_cache[step_id] = result
+        return result
+
+    plan_path = os.path.join(PLANS_DIR, plan_file)
+    if not os.path.exists(plan_path):
+        logger.warning(f"[STEP_LOADER] Plan file not found: {plan_path}")
+        result = f"Plan file not found: {plan_file}"
+        _plan_cache[step_id] = result
+        return result
+
+    with open(plan_path, "r") as f:
+        content = f.read()
+
+    logger.debug(f"[STEP_LOADER] Loaded plan for {step_id}: {plan_file} ({len(content)} chars)")
+    _plan_cache[step_id] = content
+    return content

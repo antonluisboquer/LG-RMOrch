@@ -1,0 +1,188 @@
+{
+  "agent": {
+    "name": "RMOrch",
+    "version": "1.0.0",
+    "model": "claude-sonnet-4-5"
+  },
+  "step_order": [
+    "STEP_00",
+    "STEP_01",
+    "STEP_02",
+    "STEP_03",
+    "STEP_04",
+    "STEP_05",
+    "STEP_06",
+    "STEP_07",
+    "STEP_08",
+    "STEP_09",
+    "STEP_10",
+    "STEP_11",
+    "STEP_12",
+    "STEP_13",
+    "STEP_14"
+  ],
+  "steps": {
+    "STEP_00": {
+      "name": "Data Gathering",
+      "phase": "SETUP",
+      "plan_file": "data_gathering.md",
+      "substeps": {
+        "1": { "name": "Find Loan", "tools": ["find_loan"] },
+        "2": { "name": "Fetch RM Fields", "tools": ["fetch_rm_fields"] },
+        "3": { "name": "Fetch eFolder Document Fields", "tools": ["fetch_doc_fields"] }
+      }
+    },
+    "STEP_01": {
+      "name": "Pipeline Management",
+      "phase": "PIPELINE",
+      "plan_file": "pipeline_management.md",
+      "substeps": {
+        "1": { "name": "Duties", "tools": ["review_duties"] },
+        "2": { "name": "File Touches", "tools": ["record_file_touch"] },
+        "3": { "name": "Cancelling Loans / Submitting for DFT", "tools": ["submit_dft"] },
+        "4": { "name": "ECD Validation & Updates", "tools": ["validate_ecd"] }
+      }
+    },
+    "STEP_02": {
+      "name": "Initial & Updated Underwriting Decisions",
+      "phase": "DECISIONS",
+      "plan_file": "uw_decisions.md",
+      "substeps": {
+        "1": { "name": "Approvals", "tools": ["review_approval"] },
+        "2": { "name": "Suspense / Recommendations for Denials", "tools": ["review_suspense"] }
+      }
+    },
+    "STEP_03": {
+      "name": "Loan Requests",
+      "phase": "REQUESTS",
+      "plan_file": "loan_requests.md",
+      "substeps": {
+        "1": { "name": "Exceptions", "tools": ["submit_exception"] },
+        "2": { "name": "Closing Rush Requests", "tools": ["submit_rush_request"] },
+        "3": { "name": "Condo Reviews", "tools": ["submit_condo_review"] }
+      }
+    },
+    "STEP_04": {
+      "name": "Conditions Queue",
+      "phase": "CONDITIONS",
+      "plan_file": "conditions_queue.md",
+      "substeps": {
+        "1": { "name": "Service Level Agreement (SLA)", "tools": ["check_condition_sla"] },
+        "2": { "name": "Identify & Manage Open Conditions", "tools": ["identify_open_conditions"] },
+        "3": { "name": "Review Documentation", "tools": ["review_condition_documentation"] },
+        "4": { "name": "Update Condition Statuses", "tools": ["update_condition_statuses"] },
+        "5": { "name": "Unassigned Documents", "tools": ["check_unassigned_documents"] },
+        "6": { "name": "Re-Submit to UW", "tools": ["resubmit_to_uw"] },
+        "7": { "name": "Loans not ready for UW Resubmission", "tools": ["mark_not_ready_for_resubmission"] }
+      }
+    },
+    "STEP_05": {
+      "name": "Taxes & Insurance",
+      "phase": "TAXES_INSURANCE",
+      "plan_file": "taxes_insurance.md",
+      "substeps": {
+        "1": { "name": "Hazard & Flood Insurance", "tools": ["review_hazard_flood_insurance"] },
+        "2": { "name": "Property Taxes", "tools": ["review_property_taxes"] },
+        "3": { "name": "2015 Itemization", "tools": ["update_itemization"] },
+        "4": { "name": "Aggregate Escrow Account", "tools": ["update_aggregate_escrow"] }
+      }
+    },
+    "STEP_06": {
+      "name": "Document Reviews",
+      "phase": "DOCUMENT_REVIEWS",
+      "plan_file": "document_reviews.md",
+      "substeps": {
+        "1": { "name": "Broker / Lender Signed 1003", "tools": ["review_signed_1003"] },
+        "2": { "name": "Credit Reports", "tools": ["review_credit_reports"] },
+        "3": { "name": "Preliminary Title", "tools": ["review_preliminary_title"] },
+        "4": { "name": "CPL (Closing Protection Letter)", "tools": ["review_cpl"] },
+        "5": { "name": "E&O & Wiring Instructions", "tools": ["review_eo_wiring"] },
+        "6": { "name": "Payoff Statement(s)", "tools": ["review_payoff_statements"] }
+      }
+    },
+    "STEP_07": {
+      "name": "Disclosure Tracking (Wholesale)",
+      "phase": "DISCLOSURES",
+      "plan_file": "disclosure_tracking.md",
+      "substeps": {
+        "1": { "name": "Broker Fee Agreements", "tools": ["review_broker_fee_agreements"] },
+        "2": { "name": "Initial & Locked LEs", "tools": ["review_les"] },
+        "3": { "name": "Initial Closing Disclosures", "tools": ["review_icd"] }
+      }
+    },
+    "STEP_08": {
+      "name": "Appraisals",
+      "phase": "APPRAISALS",
+      "plan_file": "appraisals.md",
+      "substeps": {
+        "1": { "name": "Receipt of the Appraisal", "tools": ["receive_appraisal"] },
+        "2": { "name": "Secondary Appraisal Reviews", "tools": ["review_secondary_appraisal"] },
+        "3": { "name": "Appraisal Corrections", "tools": ["request_appraisal_corrections"] },
+        "4": { "name": "Disaster Inspections", "tools": ["review_disaster_inspection"] }
+      }
+    },
+    "STEP_09": {
+      "name": "Third Party Orders (Wholesale)",
+      "phase": "ORDERS",
+      "plan_file": "third_party_orders.md",
+      "substeps": {
+        "1": { "name": "Credit Refresh", "tools": ["order_credit_refresh"] },
+        "2": { "name": "Credit Supplement", "tools": ["order_credit_supplement"] },
+        "3": { "name": "SSA Verifications", "tools": ["order_ssa_verification"] },
+        "4": { "name": "Tax Transcripts", "tools": ["order_tax_transcripts"] },
+        "5": { "name": "Verbal Verification of Employment (VVOE)", "tools": ["order_vvoe"] },
+        "6": { "name": "Short Term Rental Permit Validation", "tools": ["validate_str_permit"] },
+        "7": { "name": "P&L Verification", "tools": ["verify_pl"] }
+      }
+    },
+    "STEP_10": {
+      "name": "Mavent (Wholesale)",
+      "phase": "COMPLIANCE",
+      "plan_file": "mavent.md",
+      "substeps": {
+        "1": { "name": "Mavent Compliance Review", "tools": ["review_mavent"] }
+      }
+    },
+    "STEP_11": {
+      "name": "Locked Loans",
+      "phase": "LOCK",
+      "plan_file": "locked_loans.md",
+      "substeps": {
+        "1": { "name": "Lock Expiration & Variance Review", "tools": ["review_lock"] },
+        "2": { "name": "Loan Number Update (NDC only)", "tools": ["update_loan_number"] }
+      }
+    },
+    "STEP_12": {
+      "name": "File Contacts (Wholesale)",
+      "phase": "CONTACTS",
+      "plan_file": "file_contacts.md",
+      "substeps": {
+        "1": { "name": "Verify File Contacts", "tools": ["verify_file_contacts"] }
+      }
+    },
+    "STEP_13": {
+      "name": "NonQM - Document Expirations",
+      "phase": "EXPIRATIONS",
+      "plan_file": "document_expirations.md",
+      "substeps": {
+        "1": { "name": "Verify Document Expirations", "tools": ["verify_document_expirations"] }
+      }
+    },
+    "STEP_14": {
+      "name": "Prepare the File for Closing",
+      "phase": "CLOSING",
+      "plan_file": "prepare_for_closing.md",
+      "substeps": {
+        "1": { "name": "CTC Audits", "tools": ["request_ctc_audit"] },
+        "2": { "name": "Submit to UW for CTC Review", "tools": ["submit_ctc_review"] },
+        "3": { "name": "CTC Final Steps", "tools": ["ctc_final_steps"] }
+      }
+    }
+  },
+  "dev_mode": {
+    "dry_run": true,
+    "skip_steps": [],
+    "skip_substeps": [],
+    "fixture": {}
+  }
+}
